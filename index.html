@@ -1,1 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Holla Africa | Discover the Magic of Africa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-pale: #F5E9C8;
+      --black: #0A0A0A;
+      --black-soft: #141414;
+      --black-mid: #1E1E1E;
+      --cream: #F8F3E8;
+      --white: #FFFFFF;
+      --text-light: #D4C9A8;
+    }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--black);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ===== ANIMATED BACKGROUND ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(201,168,76,0.05) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+      animation: bgPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgPulse {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      transition: all 0.3s;
+    }
+
+    nav.scrolled {
+      padding: 0.8rem 3rem;
+      background: rgba(10,10,10,0.97);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--cream); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%),
+        url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1600&q=80') center/cover no-repeat;
+      animation: heroZoom 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); }
+    }
+
+    /* Gold particle dots */
+    .particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px; height: 3px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100% { transform: translateY(-20px) rotate(720deg); opacity: 0; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 1.5rem;
+      animation: fadeUp 1.2s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+      padding: 0.4rem 1.2rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 1.2s ease 0.2s both;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 1.2s ease 0.4s both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero p {
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      color: rgba(248,243,232,0.8);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+      font-weight: 300;
+      animation: fadeUp 1.2s ease 0.6s both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 1.2s ease 0.8s both;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--black);
+      padding: 0.85rem 2.2rem;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid var(--gold);
+      transition: all 0.3s;
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn-gold:hover {
+      background: transparent;
+      color: var(--gold);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--cream);
+      padding: 0.85rem 2.2rem;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid rgba(248,243,232,0.4);
+      transition: all 0.3s;
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(201,168,76,0.6);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    .scroll-down::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    /* ===== SECTION BASE ===== */
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .gold-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: 1.5rem 0;
+    }
+
+    /* ===== INTRO STRIP ===== */
+    .intro-strip {
+      background: var(--black-soft);
+      border-top: 1px solid rgba(201,168,76,0.12);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .strip-stat {
+      text-align: center;
+    }
+
+    .strip-stat .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      color: var(--gold);
+      font-weight: 300;
+    }
+
+    .strip-stat .label {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ===== DESTINATIONS ===== */
+    .destinations {
+      padding: 6rem 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .destinations-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .destinations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .dest-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.1);
+      cursor: pointer;
+      transition: border-color 0.3s;
+      background: var(--black-mid);
+      text-decoration: none;
+      display: block;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .dest-card:hover { border-color: rgba(201,168,76,0.4); }
+
+    .dest-img {
+      height: 240px;
+      overflow: hidden;
+    }
+
+    .dest-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      display: block;
+    }
+
+    .dest-card:hover .dest-img img { transform: scale(1.08); }
+
+    .dest-body {
+      padding: 1.5rem;
+    }
+
+    .dest-flag {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .dest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+
+    .dest-tagline {
+      font-size: 0.72rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .dest-desc {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .dest-link {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: gap 0.3s;
+    }
+
+    .dest-card:hover .dest-link { gap: 0.9rem; }
+
+    .dest-link::after { content: '→'; }
+
+    /* ===== ABOUT TEASER ===== */
+    .about-teaser {
+      background: var(--black-soft);
+      border-top: 1px solid rgba(201,168,76,0.08);
+      padding: 6rem 3rem;
+    }
+
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-img-wrap {
+      position: relative;
+    }
+
+    .about-img-wrap img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .about-img-wrap::before {
+      content: '';
+      position: absolute;
+      top: 1rem; left: 1rem;
+      right: -1rem; bottom: -1rem;
+      border: 1px solid rgba(201,168,76,0.2);
+      z-index: -1;
+    }
+
+    .about-text p {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+      font-weight: 300;
+    }
+
+    /* ===== FLOATING CONTACT BUTTONS ===== */
+    .float-btns {
+      position: fixed;
+      bottom: 2rem;
+      right: 1.5rem;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .float-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+
+    .float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
+
+    .float-btn.whatsapp { background: #25D366; }
+    .float-btn.email { background: var(--gold); }
+
+    .float-btn .tooltip {
+      position: absolute;
+      right: 62px;
+      background: rgba(10,10,10,0.9);
+      color: var(--cream);
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      padding: 0.4rem 0.8rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .float-btn:hover .tooltip { opacity: 1; }
+
+    /* ===== TESTIMONIAL ===== */
+    .testimonial {
+      padding: 5rem 3rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .testimonial blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial blockquote::before { content: '"'; color: var(--gold); }
+    .testimonial blockquote::after { content: '"'; color: var(--gold); }
+
+    .testimonial cite {
+      font-size: 0.72rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--black-soft);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      font-weight: 300;
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: rgba(212,201,168,0.4);
+      letter-spacing: 1px;
+    }
+
+    /* ===== MOBILE NAV ===== */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10,10,10,0.98);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 300;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:hover { color: var(--gold); }
+
+    .close-menu {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav.scrolled { padding: 0.7rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .intro-strip { padding: 1.2rem 1.5rem; gap: 2rem; }
+
+      .destinations { padding: 4rem 1.5rem; }
+      .destinations-grid { grid-template-columns: 1fr; }
+
+      .about-teaser { padding: 4rem 1.5rem; }
+      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .about-img-wrap::before { display: none; }
+
+      .testimonial { padding: 3rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating Buttons -->
+<div class="float-btns">
+  <a class="float-btn whatsapp" href="https://wa.me/27000000000" target="_blank" rel="noopener">
+    <span class="tooltip">WhatsApp Us</span>
+    <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <a class="float-btn email" href="mailto:hello@holla-africa.com">
+    <span class="tooltip">Email Us</span>
+    <svg width="22" height="22" fill="black" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+  </a>
+</div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="closeMobileMenu()">✕</button>
+  <a href="index.html" onclick="closeMobileMenu()">Home</a>
+  <a href="destinations.html" onclick="closeMobileMenu()">Destinations</a>
+  <a href="about.html" onclick="closeMobileMenu()">About</a>
+  <a href="contact.html" onclick="closeMobileMenu()">Contact</a>
+</div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <a href="index.html" class="logo">Holla <span>Africa</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="destinations.html">Destinations</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="hamburger" onclick="openMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="particles" id="particles"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Your African Dream Awaits</span>
+    <h1>Discover the<br><em>Magic of Africa</em></h1>
+    <p>From the pristine beaches of Zanzibar to the majestic wilderness of the Serengeti — your extraordinary African journey begins here.</p>
+    <div class="hero-btns">
+      <a href="destinations.html" class="btn-gold">Explore Destinations</a>
+      <a href="contact.html" class="btn-outline">Plan My Journey</a>
+    </div>
+  </div>
+  <div class="scroll-down">Scroll</div>
+</section>
+
+<!-- Stats Strip -->
+<div class="intro-strip">
+  <div class="strip-stat">
+    <div class="num">5</div>
+    <div class="label">Iconic Destinations</div>
+  </div>
+  <div class="strip-stat">
+    <div class="num">54</div>
+    <div class="label">African Countries</div>
+  </div>
+  <div class="strip-stat">
+    <div class="num">∞</div>
+    <div class="label">Unforgettable Memories</div>
+  </div>
+  <div class="strip-stat">
+    <div class="num">1</div>
+    <div class="label">Passionate Guide</div>
+  </div>
+</div>
+
+<!-- Destinations -->
+<div class="destinations">
+  <div class="destinations-header">
+    <span class="section-label">Curated Experiences</span>
+    <h2 class="section-title">Five <em>Extraordinary</em><br>African Escapes</h2>
+    <div class="gold-divider"></div>
+  </div>
+
+  <div class="destinations-grid">
+
+    <a href="destinations.html#zanzibar" class="dest-card" style="animation-delay:0.1s">
+      <div class="dest-img">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=75" alt="Zanzibar" loading="lazy"/>
+      </div>
+      <div class="dest-body">
+        <div class="dest-flag">🇹🇿</div>
+        <div class="dest-name">Zanzibar</div>
+        <div class="dest-tagline">The Spice Island</div>
+        <p class="dest-desc">Turquoise waters, powder-white beaches and the enchanting Stone Town UNESCO heritage site await in this magical Indian Ocean island.</p>
+        <span class="dest-link">Discover More</span>
+      </div>
+    </a>
+
+    <a href="destinations.html#mauritius" class="dest-card" style="animation-delay:0.2s">
+      <div class="dest-img">
+        <img src="https://images.unsplash.com/photo-1585211969224-3e992986159d?w=600&q=75" alt="Mauritius" loading="lazy"/>
+      </div>
+      <div class="dest-body">
+        <div class="dest-flag">🇲🇺</div>
+        <div class="dest-name">Mauritius</div>
+        <div class="dest-tagline">Island Paradise</div>
+        <p class="dest-desc">Luxury resorts, diverse culture and breathtaking lagoons make Mauritius the ultimate escape for families, couples and adventurers alike.</p>
+        <span class="dest-link">Discover More</span>
+      </div>
+    </a>
+
+    <a href="destinations.html#seychelles" class="dest-card" style="animation-delay:0.3s">
+      <div class="dest-img">
+        <img src="https://images.unsplash.com/photo-1589979481223-deb893043163?w=600&q=75" alt="Seychelles" loading="lazy"/>
+      </div>
+      <div class="dest-body">
+        <div class="dest-flag">🇸🇨</div>
+        <div class="dest-name">Seychelles</div>
+        <div class="dest-tagline">Exclusive Island Eden</div>
+        <p class="dest-desc">115 pristine islands of pure luxury — granite boulders, crystal waters and seclusion define the world's most romantic archipelago.</p>
+        <span class="dest-link">Discover More</span>
+      </div>
+    </a>
+
+    <a href="destinations.html#safari" class="dest-card" style="animation-delay:0.4s">
+      <div class="dest-img">
+        <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=75" alt="Kenya Safari" loading="lazy"/>
+      </div>
+      <div class="dest-body">
+        <div class="dest-flag">🇰🇪</div>
+        <div class="dest-name">Kenya Safari</div>
+        <div class="dest-tagline">The Great Migration</div>
+        <p class="dest-desc">Witness the spectacular wildebeest migration across the Masai Mara — nature's greatest wildlife spectacle on earth.</p>
+        <span class="dest-link">Discover More</span>
+      </div>
+    </a>
+
+    <a href="destinations.html#capetown" class="dest-card" style="animation-delay:0.5s">
+      <div class="dest-img">
+        <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&q=75" alt="Cape Town" loading="lazy"/>
+      </div>
+      <div class="dest-body">
+        <div class="dest-flag">🇿🇦</div>
+        <div class="dest-name">Cape Town</div>
+        <div class="dest-tagline">The Mother City</div>
+        <p class="dest-desc">Where mountains meet the ocean — Cape Town dazzles with world-class wine, cuisine, culture and some of Africa's most dramatic scenery.</p>
+        <span class="dest-link">Discover More</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- About Teaser -->
+<div class="about-teaser">
+  <div class="about-inner">
+    <div class="about-img-wrap">
+      <img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=700&q=75" alt="Africa landscape" loading="lazy"/>
+    </div>
+    <div class="about-text">
+      <span class="section-label">Our Story</span>
+      <h2 class="section-title">Passion for <em>Africa</em></h2>
+      <div class="gold-divider"></div>
+      <p>We are passionate Africa ambassadors, dedicated to connecting you with the breathtaking beauty of five extraordinary destinations across the continent. Every destination we promote has been personally experienced and deeply loved.</p>
+      <p>From hidden beach gems to world-renowned safari adventures, our mission is to inspire you to explore, discover, and fall in love with Africa — just as we have.</p>
+      <a href="about.html" class="btn-outline" style="margin-top:1rem; display:inline-block;">Learn More About Us</a>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonial -->
+<div class="testimonial">
+  <blockquote>Africa changes you forever. The continent doesn't just get under your skin — it gets into your soul. Once you've experienced her magic, you will always, always want to come back.</blockquote>
+  <cite>— Africa, the Mother Continent</cite>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">Holla Africa</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="destinations.html">Destinations</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://wa.me/27000000000" target="_blank">WhatsApp</a>
+  </div>
+  <p class="footer-copy">© 2025 Holla Africa · All Rights Reserved · Made with ♥ for Africa</p>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile menu
+  function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Gold particles
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+    p.style.animationDuration = (Math.random() * 12 + 8) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    container.appendChild(p);
+  }
+
+  // Scroll-triggered animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.dest-card').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
